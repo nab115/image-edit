@@ -3,5 +3,23 @@
 }
 
 h1 {
-    font-size: "50px";
+    font-size: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type : none;
+}
+
+li {
+    display: inline-block;
+}
+
+#image-container {
+    height: 700px;
+    width: 800px;
+    background-color: rgb(199, 196, 196);
+    margin: auto;
+    border: 2px black solid;
 }
