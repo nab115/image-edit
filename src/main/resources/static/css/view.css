@@ -1,13 +1,14 @@
 body {
     height: 100vh;
     width: 70vw;
-    min-width: 500px;
+    min-width: 700px;
     max-width: 1000px;
     margin: auto;
 }
 
 #header-container {
     text-align: left;
+    color: grey;
     height: 10%;
     position: relative;
 }
@@ -17,6 +18,13 @@ h1 {
     margin-top: 20px;
     margin-bottom: 20px;
     display : inline-block;
+}
+
+#process-type-title {
+    display: inline-block;
+    width: 100px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 ul {
@@ -36,4 +44,15 @@ li {
     height: 80%;
     background-color: rgb(199, 196, 196);
     border: 2px black solid;
+    position: relative;
+}
+
+#form-container{
+    position: absolute;
+    right: 10px;
+    bottom : 10px;
+}
+
+form {
+    padding-bottom: 10px;
 }
