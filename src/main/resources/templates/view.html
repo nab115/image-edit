@@ -1,7 +1,7 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:"http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/view.css">
 <script src="/js/jquery-3.6.1.min.js"></script>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Image Processing</title>
@@ -19,9 +19,19 @@
         </ul>
     </div>
     <div id="image-container">
-        <div id="form-container">
-            <button id="upload-button">Upload</button>
-            <button>Convert</button>
+        <button id="upload-button">Upload</button>
+        <form action="/" method="POST">
+            <div>
+                <input name="name" value="" />
+            </div>
+            <button>Submit</button>
+        </form>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/jpeg">
+            <button>Upload Image</button>
+        </form>
+        <div>
+            <img th:src="@{'data:image/jpeg;base64,'+${encoded}}" />
         </div>
     </div>
 </body>

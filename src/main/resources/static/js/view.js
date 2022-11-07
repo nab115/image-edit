@@ -7,5 +7,5 @@ $(".process-type-btn").click(function() {
 })
 
 $("#upload-button").click(function(e) {
-    $.post("/", "testing POST");
+    $.post("/", "testing");
 })
