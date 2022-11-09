@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:"http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/view.css">
+<script src="/js/jquery-3.6.1.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="height=device-height, initial-scale=1">
+</head>
+<body>
+    <div id="header-container">
+        <h1>Image Processing</h1>
+        <h2 id="process-type-title">.</h2>
+        <ul>
+            <li><button type="button" class="process-type-btn">GreyScale</button></li>
+            <li><button type="button" class="process-type-btn">Crop</button></li>
+            <li><button type="button" class="process-type-btn">Compression</button></li>
+        </ul>
+    </div>
+    <div id="image-container">
+            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}"/>
+    </div>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/jpeg">
+        <button>Upload</button>
+    </form>
+</body>
+<script src="/js/view.js"></script>
+</html>
