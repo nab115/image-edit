@@ -19,21 +19,12 @@
         </ul>
     </div>
     <div id="image-container">
-        <button id="upload-button">Upload</button>
-        <form action="/" method="POST">
-            <div>
-                <input name="name" value="" />
-            </div>
-            <button>Submit</button>
-        </form>
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" accept="image/jpeg">
-            <button>Upload Image</button>
-        </form>
-        <div>
-            <img th:src="@{'data:image/jpeg;base64,'+${encoded}}" />
-        </div>
+            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}"/>
     </div>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/jpeg">
+        <button>Upload</button>
+    </form>
 </body>
 <script src="/js/view.js"></script>
 </html>
