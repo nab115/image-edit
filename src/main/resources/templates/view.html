@@ -19,11 +19,15 @@
         </ul>
     </div>
     <div id="image-container">
-            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}"/>
+            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}" alt=""/>
     </div>
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/jpeg">
         <button>Upload</button>
+    </form>
+    <form action="/test" method="POST">
+        <input type="text" name="name" value="" />
+        <button>Submit</button>
     </form>
 </body>
 <script src="/js/view.js"></script>
