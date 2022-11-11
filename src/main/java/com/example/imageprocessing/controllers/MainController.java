@@ -36,15 +36,15 @@ public class MainController {
         return "view";
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(Model model, @RequestParam("image") MultipartFile img) throws IOException {
 
-        model.addAttribute("encoded", Base64.getEncoder().encodeToString(img.getBytes()));
         System.out.println("Image Upload : " + img.getOriginalFilename());
 
-        BufferedImage upload = ImageIO.read(img.getInputStream());
+        image.setImage(ImageIO.read(img.getInputStream()));
 
-        System.out.println(image.getCount());
+        model.addAttribute("encoded", image.getBase64Encoded());
+
         return "view";
     }
 }
