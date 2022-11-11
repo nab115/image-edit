@@ -3,9 +3,15 @@ $(document).ready(function() {
 })
 
 $(".process-type-btn").click(function() {
-    document.getElementById("process-type-title").textContent = $(this).text();
-})
-
-$("#upload-button").click(function(e) {
-    $.post("/", "testing");
+    console.log("js working")
+    $.ajax({
+        url: "/"
+        , type: "POST"
+        , data: $(this).attr("name")
+        , contentType: "text/plain"
+        , success : (result) => {
+            console.log("ajax");
+            $("#image").attr("src", result);
+        }
+    })
 })

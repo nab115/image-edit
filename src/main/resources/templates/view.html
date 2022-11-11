@@ -11,19 +11,22 @@
 <body>
     <div id="header-container">
         <h1>Image Processing</h1>
-        <h2 id="process-type-title">.</h2>
         <ul>
-            <li><button type="button" class="process-type-btn">GreyScale</button></li>
-            <li><button type="button" class="process-type-btn">Crop</button></li>
-            <li><button type="button" class="process-type-btn">Compression</button></li>
+            <li><button type="button" name="greyscale" class="process-type-btn">GreyScale</button></li>
+            <li><button type="button" name="crop" class="process-type-btn">Crop</button></li>
+            <li><button type="button" name="compress" class="process-type-btn">Compress</button></li>
         </ul>
     </div>
     <div id="image-container">
-            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}"/>
+            <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}" alt=""/>
     </div>
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/jpeg">
         <button>Upload</button>
+    </form>
+    <form action="/" method="POST">
+        <input type="text" name="name" value="" />
+        <button>Submit</button>
     </form>
 </body>
 <script src="/js/view.js"></script>
