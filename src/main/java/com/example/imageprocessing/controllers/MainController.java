@@ -5,10 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -30,10 +27,26 @@ public class MainController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String submit(@RequestBody String testInput) {
+    public String submit(@RequestBody String input) {
 
-        System.out.println("Submit Working : " + testInput);
+        System.out.println("Submit Working : " + input);
         return "view";
+    }
+
+    @PostMapping(value = "/", consumes = "text/plain")
+    @ResponseBody
+    public String transform(Model model, @RequestBody String input) throws IOException {
+
+        if (image.hasData()) {
+            if (input.equals("greyscale")) {
+                System.out.println("Transform Working : " + input);
+                image.greyscale();
+            } else {
+                System.out.println("Transform Working : " + input);
+                image.crop();
+            }
+        }
+        return "data:image/jpeg;base64," + image.getBase64Encoded();
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
