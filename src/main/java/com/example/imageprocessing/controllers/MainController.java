@@ -35,18 +35,16 @@ public class MainController {
 
     @PostMapping(value = "/", consumes = "text/plain")
     @ResponseBody
-    public String transform(Model model, @RequestBody String input) throws IOException {
+    public String transform(Model model, @RequestBody String input){
 
-        if (image.hasData()) {
-            if (input.equals("greyscale")) {
-                System.out.println("Transform Working : " + input);
-                image.greyscale();
-            } else {
-                System.out.println("Transform Working : " + input);
-                image.crop();
-            }
+        System.out.println("Transform : " + input);
+        try {
+            image.convert(input);
+            return "data:image/jpeg;base64," + image.getBase64Encoded();
+        } catch (IOException e) {
+            return "";
         }
-        return "data:image/jpeg;base64," + image.getBase64Encoded();
+
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

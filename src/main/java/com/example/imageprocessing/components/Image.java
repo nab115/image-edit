@@ -31,7 +31,21 @@ public class Image {
         return encoded;
     }
 
-    public void greyscale() {
+    public void convert(String command) throws IOException, IllegalArgumentException {
+
+        if (!imageSet) {
+            System.out.println("Image has not been uploaded");
+            throw new IOException();
+        }
+
+        if (command.equals("greyscale")) {
+            this.greyscale();
+        } else if (command.equals("crop")) {
+            this.crop();
+        } else throw new IllegalArgumentException(command + " is not a valid processing feature");
+    }
+
+    private void greyscale() {
         for (int i = 0; i < transformed.getWidth(); i++) {
             for (int j = 0; j < transformed.getHeight(); j++) {
                 int r, g, b, rgb, grey;
@@ -46,10 +60,8 @@ public class Image {
         }
     }
 
-    public void crop() throws IOException {
-        transformed = transformed.getSubimage(0, 0, 400, 400);
-        File outputfile = new File("cropped.jpg");
-        ImageIO.write(transformed, "jpg", outputfile);
+    private void crop() throws IOException {
+        transformed = transformed.getSubimage(200, 200, 400, 400);
     }
 
     public BufferedImage getImage(){
