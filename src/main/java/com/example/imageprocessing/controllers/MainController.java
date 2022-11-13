@@ -23,14 +23,14 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "view";
+        return "initial";
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String submit(@RequestBody String input) {
 
         System.out.println("Submit Working : " + input);
-        return "view";
+        return "initial";
     }
 
     @PostMapping(value = "/", consumes = "text/plain")
@@ -56,6 +56,6 @@ public class MainController {
 
         model.addAttribute("encoded", image.getBase64Encoded());
 
-        return "view";
+        return "upload";
     }
 }

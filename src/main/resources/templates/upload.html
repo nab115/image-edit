@@ -18,7 +18,13 @@
         </ul>
     </div>
     <div id="image-container">
+        <div>
+            <span class="crop-line" id="left"></span>
+            <span class="crop-line" id="top"></span>
+            <span class="crop-line" id="bottom"></span>
+            <span class="crop-line" id="right"></span>
             <img id="image" th:src="@{'data:image/jpeg;base64,'+${encoded}}" alt=""/>
+        </div>
     </div>
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/jpeg">
