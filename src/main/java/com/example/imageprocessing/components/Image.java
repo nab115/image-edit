@@ -72,11 +72,8 @@ public class Image {
         int y = (int) (transformed.getHeight() * (t / height));
         int x2 = (int) (transformed.getWidth() * (r / width));
         int y2 = (int) (transformed.getHeight() * (b / height));
-        System.out.println(transformed.getWidth() + " " + transformed.getHeight());
-        System.out.println(l + " " + t + " " + r + " " + b + " " + height);
-        System.out.println(x + " " + y + " " + x2 + " " + y2);
         cropped = transformed.getSubimage(x, y, x2 - x, y2 - y);
-        System.out.println("cropped image has been set");
+        System.out.println("Cropped image has been set.");
     }
 
     public BufferedImage getImage(){
