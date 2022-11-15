@@ -15,11 +15,13 @@ public class Image {
 
     private BufferedImage original;
     private BufferedImage transformed;
+    private BufferedImage cropped;
     private boolean imageSet = false;
 
     public void setImage(BufferedImage bi) {
         original = bi;
         transformed = bi;
+        cropped = bi;
         imageSet = true;
     }
 
@@ -61,7 +63,17 @@ public class Image {
     }
 
     private void crop() throws IOException {
-        transformed = transformed.getSubimage(200, 200, 400, 400);
+        transformed = cropped;
+    }
+
+    public void setCrop(double l, double t, double r, double b, double width, double height) throws IOException {
+
+        int x = (int) (transformed.getWidth() * (l / width));
+        int y = (int) (transformed.getHeight() * (t / height));
+        int x2 = (int) (transformed.getWidth() * (r / width));
+        int y2 = (int) (transformed.getHeight() * (b / height));
+        cropped = transformed.getSubimage(x, y, x2 - x, y2 - y);
+        System.out.println("Cropped image has been set.");
     }
 
     public BufferedImage getImage(){

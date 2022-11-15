@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/view.css">
+<script src="/js/jquery-3.6.1.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="height=device-height, initial-scale=1">
+</head>
+<body>
+<div id="header-container">
+    <h1>Image Processing</h1>
+    <form action="/" method="POST">
+        <ul>
+            <li><input type="submit" name="greyscale" class="process-type-btn" value="Greyscale"></li>
+            <li><input type="submit" name="crop" class="process-type-btn" value="Crop"></li>
+            <li><input type="submit" name="compress" class="process-type-btn" value="Compress"></li>
+        </ul>
+    </form>
+</div>
+<div id="image-container">
+</div>
+<form action="/" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/jpeg">
+    <button>Upload</button>
+</form>
+</body>
+<script src="/js/view.js"></script>
+</html>

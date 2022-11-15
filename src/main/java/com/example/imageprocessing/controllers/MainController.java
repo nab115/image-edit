@@ -23,28 +23,43 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "view";
+        return "initial";
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String submit(@RequestBody String input) {
-
-        System.out.println("Submit Working : " + input);
-        return "view";
-    }
-
-    @PostMapping(value = "/", consumes = "text/plain")
-    @ResponseBody
     public String transform(Model model, @RequestBody String input){
-
-        System.out.println("Transform : " + input);
+        String command = input.split("=")[0];
+        System.out.println("Transform : " + command);
         try {
-            image.convert(input);
-            return "data:image/jpeg;base64," + image.getBase64Encoded();
-        } catch (IOException e) {
-            return "";
+            image.convert(command);
+            model.addAttribute("encoded", image.getBase64Encoded());
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return "initial";
         }
 
+        return "upload";
+
+    }
+
+    @PostMapping(value = "/crop", consumes = "text/plain")
+    @ResponseBody
+    public String setCrop(@RequestBody String input) throws IOException {
+        String[] bounds = input.split(",");
+        try {
+            image.setCrop(
+                    Double.parseDouble(bounds[0])
+                    , Double.parseDouble(bounds[1])
+                    , Double.parseDouble(bounds[2])
+                    , Double.parseDouble(bounds[3])
+                    , Double.parseDouble(bounds[4])
+                    , Double.parseDouble(bounds[5])
+            );
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        return "success";
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -56,6 +71,6 @@ public class MainController {
 
         model.addAttribute("encoded", image.getBase64Encoded());
 
-        return "view";
+        return "upload";
     }
 }
