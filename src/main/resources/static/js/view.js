@@ -14,18 +14,6 @@ $(document).ready(function() {
     imageBounds.set("left", rect.left);
     imageBounds.set("right", rect.right);
 
-//    $(".process-type-btn").click(function() {
-//        $.ajax({
-//            url: "/"
-//            , type: "POST"
-//            , data: $(this).attr("name")
-//            , contentType: "text/plain"
-//            , success : (result) => {
-//                $("#image").attr("src", result);
-//            }
-//        })
-//    })
-
     /*
     Nesting dragLine and the mousup listener inside mousdown listener
     seems like a messy way of accomplishing this. Should come back and improve this logic.
@@ -47,7 +35,6 @@ $(document).ready(function() {
             if ((line.attr("id") === ("top")) || (line.attr("id") === ("bottom"))) {
                 if (inBounds(line.attr("id"), e.clientY)) {
                     offset = imageBounds.get("top");
-                    console.log((e.clientY - offset));
                     line.css("top", (e.clientY - offset) + 'px');
                 }
             }
@@ -76,9 +63,10 @@ $(document).ready(function() {
 
                 // logging here prints out 2^n - need to figure out why this function is
                 // calling itself recursively
-                console.log(imageBounds.entries());
-                console.log(cropBounds.entries());
+//                console.log(imageBounds.entries());
+//                console.log(cropBounds.entries());
                 window.removeEventListener('mousemove', dragLine, false);
+                setCrop();
         })
     })
 })
@@ -106,4 +94,26 @@ function inBounds(line_id, value) {
     if (value >= b1 && value <= b2) return true;
 
     return false;
+}
+
+function setCrop() {
+        body =
+            (cropBounds.get("left") - imageBounds.get("left"))
+            + ","
+            + (cropBounds.get("top") - imageBounds.get("top"))
+            + ","
+            + (cropBounds.get("right") - imageBounds.get("left"))
+            + ","
+            + (cropBounds.get("bottom") - imageBounds.get("top"))
+            + ","
+            + (imageBounds.get("right") - imageBounds.get("left"))
+            + ","
+            + (imageBounds.get("bottom") - imageBounds.get("top"))
+
+        $.ajax({
+            url: "/crop"
+            , type: "POST"
+            , data: body
+            , contentType: "text/plain"
+        })
 }

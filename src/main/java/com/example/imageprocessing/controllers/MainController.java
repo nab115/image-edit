@@ -33,12 +33,33 @@ public class MainController {
         try {
             image.convert(command);
             model.addAttribute("encoded", image.getBase64Encoded());
-        } catch (IOException e) {
-            // do nothing
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return "initial";
         }
 
         return "upload";
 
+    }
+
+    @PostMapping(value = "/crop", consumes = "text/plain")
+    @ResponseBody
+    public String setCrop(@RequestBody String input) throws IOException {
+        String[] bounds = input.split(",");
+        try {
+            image.setCrop(
+                    Double.parseDouble(bounds[0])
+                    , Double.parseDouble(bounds[1])
+                    , Double.parseDouble(bounds[2])
+                    , Double.parseDouble(bounds[3])
+                    , Double.parseDouble(bounds[4])
+                    , Double.parseDouble(bounds[5])
+            );
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        return "success";
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
