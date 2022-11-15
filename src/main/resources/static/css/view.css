@@ -56,30 +56,31 @@ li {
 .crop-line {
     position: absolute;
     background-color: rgb(204,204,0);
+    cursor: grab;
 
 }
 
 #left{
     height: 100%;
-    width: 2px;
+    width: 4px;
     left: 0px;
 }
 
 #right{
     height: 100%;
-    width: 2px;
+    width: 4px;
     right: 0px;
 }
 
 #top{
     width: 100%;
-    height: 2px;
+    height: 4px;
     top: 0px;
 }
 
 #bottom{
     width: 100%;
-    height: 2px;
+    height: 4px;
     bottom: 0px;
 }
 
@@ -90,4 +91,11 @@ form {
 
 #image {
     width: 100%;
+    pointer-events: none;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
