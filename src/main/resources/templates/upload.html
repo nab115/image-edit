@@ -11,14 +11,16 @@
 <body>
     <div id="header-container">
         <h1>Image Processing</h1>
-        <ul>
-            <li><button type="button" name="greyscale" class="process-type-btn">GreyScale</button></li>
-            <li><button type="button" name="crop" class="process-type-btn">Crop</button></li>
-            <li><button type="button" name="compress" class="process-type-btn">Compress</button></li>
-        </ul>
+        <form action="/" method="POST">
+            <ul>
+                <li><input type="submit" name="greyscale" class="process-type-btn" value="Greyscale"></li>
+                <li><input type="submit" name="crop" class="process-type-btn" value="Crop"></li>
+                <li><input type="submit" name="compress" class="process-type-btn" value="Compress"></li>
+            </ul>
+        </form>
     </div>
     <div id="image-container">
-        <div>
+        <div id="container">
             <span class="crop-line" id="left"></span>
             <span class="crop-line" id="top"></span>
             <span class="crop-line" id="bottom"></span>
@@ -29,10 +31,6 @@
     <form action="/" method="POST" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/jpeg">
         <button>Upload</button>
-    </form>
-    <form action="/" method="POST">
-        <input type="text" name="name" value="" />
-        <button>Submit</button>
     </form>
 </body>
 <script src="/js/view.js"></script>

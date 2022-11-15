@@ -61,7 +61,7 @@ public class Image {
     }
 
     private void crop() throws IOException {
-        transformed = transformed.getSubimage(200, 200, 400, 400);
+        transformed = transformed.getSubimage(20, 20, 100, 100);
     }
 
     public BufferedImage getImage(){

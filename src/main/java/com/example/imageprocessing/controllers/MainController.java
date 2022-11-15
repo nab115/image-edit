@@ -27,23 +27,17 @@ public class MainController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String submit(@RequestBody String input) {
-
-        System.out.println("Submit Working : " + input);
-        return "initial";
-    }
-
-    @PostMapping(value = "/", consumes = "text/plain")
-    @ResponseBody
     public String transform(Model model, @RequestBody String input){
-
-        System.out.println("Transform : " + input);
+        String command = input.split("=")[0];
+        System.out.println("Transform : " + command);
         try {
-            image.convert(input);
-            return "data:image/jpeg;base64," + image.getBase64Encoded();
+            image.convert(command);
+            model.addAttribute("encoded", image.getBase64Encoded());
         } catch (IOException e) {
-            return "";
+            // do nothing
         }
+
+        return "upload";
 
     }
 
