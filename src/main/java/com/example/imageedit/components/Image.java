@@ -42,6 +42,8 @@ public class Image {
             this.greyscale();
         } else if (command.equals("crop")) {
             this.crop();
+        } else if (command.equals("reset")) {
+            this.reset();
         } else throw new IllegalArgumentException(command + " is not a valid processing feature");
     }
 
@@ -62,6 +64,11 @@ public class Image {
 
     private void crop() throws IOException {
         transformed = cropped;
+    }
+
+    private void reset() {
+        transformed = original;
+        cropped = original;
     }
 
     public void setCrop(double l, double t, double r, double b, double width, double height) throws IOException {
