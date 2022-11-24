@@ -1,12 +1,10 @@
-package com.example.imageprocessing.components;
+package com.example.imageedit.components;
 
-import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 

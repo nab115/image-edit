@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>imageprocessing</artifactId>
+	<artifactId>image-edit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>imageprocessing</name>
-	<description>Image Processing Application</description>
+	<name>image-edit</name>
+	<description>Image Editing Web Application</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

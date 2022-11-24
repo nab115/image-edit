@@ -1,4 +1,4 @@
-package com.example.imageprocessing.components;
+package com.example.imageedit.components;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

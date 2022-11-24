@@ -1,19 +1,16 @@
-package com.example.imageprocessing.controllers;
+package com.example.imageedit.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Base64;
 
-import com.example.imageprocessing.components.Image;
+import com.example.imageedit.components.Image;
 
 @Controller
 public class MainController {
