@@ -3,16 +3,26 @@ const imageBounds = new Map();
 
 $(document).ready(function() {
 
-    const rect = document.getElementById('container').getBoundingClientRect();
-    cropBounds.set("top", rect.top);
-    cropBounds.set("bottom", rect.bottom);
-    cropBounds.set("left", rect.left);
-    cropBounds.set("right", rect.right);
+    setBounds();
 
-    imageBounds.set("top", rect.top);
-    imageBounds.set("bottom", rect.bottom);
-    imageBounds.set("left", rect.left);
-    imageBounds.set("right", rect.right);
+    $(".process-type-btn").click(function (){
+        console.log($(this).attr("name"));
+        var data = {"transform": $(this).attr("name")}
+        if (data["transform"] === "crop") {
+            data["cropParams"] = getCropString();
+        }
+        console.log(data);
+
+        $.ajax({
+            url: "/"
+            , type: "POST"
+            , data: data
+            , success : (response) => {
+                $("#image").attr("src", response);
+                setBounds();
+            }
+        })
+    })
 
     /*
     Nesting dragLine and the mousup listener inside mousdown listener
@@ -66,7 +76,6 @@ $(document).ready(function() {
 //                console.log(imageBounds.entries());
 //                console.log(cropBounds.entries());
                 window.removeEventListener('mousemove', dragLine, false);
-                setCrop();
         })
     })
 })
@@ -96,24 +105,31 @@ function inBounds(line_id, value) {
     return false;
 }
 
-function setCrop() {
-        body =
-            (cropBounds.get("left") - imageBounds.get("left"))
-            + ","
-            + (cropBounds.get("top") - imageBounds.get("top"))
-            + ","
-            + (cropBounds.get("right") - imageBounds.get("left"))
-            + ","
-            + (cropBounds.get("bottom") - imageBounds.get("top"))
-            + ","
-            + (imageBounds.get("right") - imageBounds.get("left"))
-            + ","
-            + (imageBounds.get("bottom") - imageBounds.get("top"))
+function getCropString() {
 
-        $.ajax({
-            url: "/crop"
-            , type: "POST"
-            , data: body
-            , contentType: "text/plain"
-        })
+    return (cropBounds.get("left") - imageBounds.get("left"))
+    + ","
+    + (cropBounds.get("top") - imageBounds.get("top"))
+    + ","
+    + (cropBounds.get("right") - imageBounds.get("left"))
+    + ","
+    + (cropBounds.get("bottom") - imageBounds.get("top"))
+    + ","
+    + (imageBounds.get("right") - imageBounds.get("left"))
+    + ","
+    + (imageBounds.get("bottom") - imageBounds.get("top"))
+}
+
+function setBounds() {
+
+    const rect = document.getElementById('container').getBoundingClientRect();
+    cropBounds.set("top", rect.top);
+    cropBounds.set("bottom", rect.bottom);
+    cropBounds.set("left", rect.left);
+    cropBounds.set("right", rect.right);
+
+    imageBounds.set("top", rect.top);
+    imageBounds.set("bottom", rect.bottom);
+    imageBounds.set("left", rect.left);
+    imageBounds.set("right", rect.right);
 }

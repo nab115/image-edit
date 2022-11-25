@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import com.example.imageedit.components.Image;
 
@@ -20,43 +22,29 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "initial";
+        return "upload";
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String transform(Model model, @RequestBody String input){
-        String command = input.split("=")[0];
-        System.out.println("Transform : " + command);
+    @ResponseBody
+    public String transform(
+            @RequestParam("transform") String transform
+            , @RequestParam(value="cropParams", required = false) String cropParams
+    ) throws UnsupportedEncodingException {
+        System.out.println(transform);
+        cropParams = cropParams == null ? null : URLDecoder.decode(cropParams, "UTF-8");
+        System.out.println(cropParams);
+
+        System.out.println("Transform : " + transform);
+
         try {
-            image.convert(command);
-            model.addAttribute("encoded", image.getBase64Encoded());
+            image.convert(transform, cropParams);
+            return "data:image/jpeg;base64," + image.getBase64Encoded();
         } catch (IOException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            return "initial";
+            return "erorr";
         }
 
-        return "upload";
-
-    }
-
-    @PostMapping(value = "/crop", consumes = "text/plain")
-    @ResponseBody
-    public String setCrop(@RequestBody String input) throws IOException {
-        String[] bounds = input.split(",");
-        try {
-            image.setCrop(
-                    Double.parseDouble(bounds[0])
-                    , Double.parseDouble(bounds[1])
-                    , Double.parseDouble(bounds[2])
-                    , Double.parseDouble(bounds[3])
-                    , Double.parseDouble(bounds[4])
-                    , Double.parseDouble(bounds[5])
-            );
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        return "success";
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
