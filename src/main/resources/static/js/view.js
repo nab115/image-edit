@@ -3,7 +3,7 @@ const imageBounds = new Map();
 
 $(document).ready(function() {
 
-    setBounds();
+    getImage();
 
     $(".process-type-btn").click(function (){
         console.log($(this).attr("name"));
@@ -18,8 +18,7 @@ $(document).ready(function() {
             , type: "POST"
             , data: data
             , success : (response) => {
-                $("#image").attr("src", response);
-                setBounds();
+                displayImage(response);
             }
         })
     })
@@ -132,4 +131,33 @@ function setBounds() {
     imageBounds.set("bottom", rect.bottom);
     imageBounds.set("left", rect.left);
     imageBounds.set("right", rect.right);
+}
+
+function getImage() {
+    console.log("retrieving image . . .");
+    $.ajax({
+            url: "/image"
+            , type: "GET"
+            , success : (response) => {
+                displayImage(response);
+            }
+        })
+}
+
+function displayImage(encoded) {
+
+    if (encoded) {
+        imageHTML = `
+            <span class="crop-line" id="left"></span>
+            <span class="crop-line" id="top"></span>
+            <span class="crop-line" id="bottom"></span>
+            <span class="crop-line" id="right"></span>
+            <img id="image" src="data:image/jpeg;base64, ${encoded}" alt=""/>
+        `;
+
+        console.log(imageHTML);
+
+        document.getElementById("container").innerHTML = imageHTML;
+        setBounds();
+    }
 }
