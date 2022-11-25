@@ -62,7 +62,7 @@ public class MainController {
 
         System.out.println("Image Upload : " + img.getOriginalFilename());
 
-        image.setImage(ImageIO.read(img.getInputStream()));
+        image.setImage(img.getBytes());
 
         model.addAttribute("encoded", image.getBase64Encoded());
 
