@@ -4,7 +4,10 @@ import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -17,7 +20,7 @@ public class Image {
 
     public void setImage(BufferedImage bi) {
         original = bi;
-        transformed = bi;
+        transformed = deepCopy(bi);
         imageSet = true;
     }
 
@@ -52,7 +55,7 @@ public class Image {
     }
 
     private void reset() {
-        transformed = original;
+        transformed = deepCopy(original);
     }
 
     private void greyscale() {
@@ -95,13 +98,12 @@ public class Image {
         transformed = transformed.getSubimage(x, y, x2 - x, y2 - y);
     }
 
-    public BufferedImage getImage(){
-        return transformed;
+    // reference : https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
+    public BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(bi.getRaster().createCompatibleWritableRaster());
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
-
-    public boolean hasData(){
-        return imageSet;
-    }
-
 
 }
