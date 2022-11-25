@@ -31,7 +31,7 @@ public class Image {
         return encoded;
     }
 
-    public void convert(String command) throws IOException, IllegalArgumentException {
+    public void convert(String command, String cropBounds) throws IOException, IllegalArgumentException {
 
         if (!imageSet) {
             System.out.println("Image has not been uploaded");
@@ -41,10 +41,15 @@ public class Image {
         if (command.equals("greyscale")) {
             this.greyscale();
         } else if (command.equals("crop")) {
-            this.crop();
+            this.crop(cropBounds);
         } else if (command.equals("reset")) {
             this.reset();
         } else throw new IllegalArgumentException(command + " is not a valid processing feature");
+    }
+
+    private void reset() {
+        transformed = original;
+        cropped = original;
     }
 
     private void greyscale() {
@@ -62,23 +67,29 @@ public class Image {
         }
     }
 
-    private void crop() throws IOException {
-        transformed = cropped;
+    private void crop(String cropParams) throws IOException {
+        String[] bounds = cropParams.split(",");
+        try {
+            this.crop(
+                    Double.parseDouble(bounds[0])
+                    , Double.parseDouble(bounds[1])
+                    , Double.parseDouble(bounds[2])
+                    , Double.parseDouble(bounds[3])
+                    , Double.parseDouble(bounds[4])
+                    , Double.parseDouble(bounds[5])
+            );
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    private void reset() {
-        transformed = original;
-        cropped = original;
-    }
-
-    public void setCrop(double l, double t, double r, double b, double width, double height) throws IOException {
+    private void crop(double l, double t, double r, double b, double width, double height) throws IOException {
 
         int x = (int) (transformed.getWidth() * (l / width));
         int y = (int) (transformed.getHeight() * (t / height));
         int x2 = (int) (transformed.getWidth() * (r / width));
         int y2 = (int) (transformed.getHeight() * (b / height));
-        cropped = transformed.getSubimage(x, y, x2 - x, y2 - y);
-        System.out.println("Cropped image has been set.");
+        transformed = transformed.getSubimage(x, y, x2 - x, y2 - y);
     }
 
     public BufferedImage getImage(){
