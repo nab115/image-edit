@@ -13,17 +13,21 @@ public class Image {
 
     private BufferedImage original;
     private BufferedImage transformed;
-    private BufferedImage cropped;
     private boolean imageSet = false;
 
     public void setImage(BufferedImage bi) {
         original = bi;
         transformed = bi;
-        cropped = bi;
         imageSet = true;
     }
 
     public String getBase64Encoded() throws IOException {
+
+        if (!imageSet) {
+            System.out.println("Image has not been uploaded");
+            throw new IOException();
+        }
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(transformed, "JPG", baos);
         String encoded = Base64.getEncoder().encodeToString(baos.toByteArray());
@@ -49,7 +53,6 @@ public class Image {
 
     private void reset() {
         transformed = original;
-        cropped = original;
     }
 
     private void greyscale() {
