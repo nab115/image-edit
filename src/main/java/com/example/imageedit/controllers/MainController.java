@@ -22,6 +22,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
+        image.clearImage();
         return "upload";
     }
 

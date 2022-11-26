@@ -30,6 +30,12 @@ public class Image {
         }
     }
 
+    public void clearImage() {
+        this.imageData = null;
+        this.image = null;
+        this.imageSet = false;
+    }
+
     public String getBase64Encoded() throws IOException {
 
         if (!imageSet) {
