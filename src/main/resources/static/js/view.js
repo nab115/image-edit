@@ -1,9 +1,29 @@
 var cropBounds = new Map();
 const imageBounds = new Map();
 
+function sleep(ms) {
+    return new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+}
+
 $(document).ready(function() {
 
+    $("#image").on("load", function(){
+        console.log("image loaded . . .");
+    })
+
     getImage();
+    console.log("whatever");
+
+    $("#setBounds").click(function (){
+        setBounds();
+    })
+
+    $(document).on("click", "h1", function(){
+        console.log("closer . . .");
+    })
+
 
     $(".process-type-btn").click(function (){
         console.log($(this).attr("name"));
@@ -11,14 +31,13 @@ $(document).ready(function() {
         if (data["transform"] === "crop") {
             data["cropParams"] = getCropString();
         }
-        console.log(data);
 
         $.ajax({
             url: "/"
             , type: "POST"
             , data: data
-            , success : (response) => {
-                displayImage(response);
+            , success : () => {
+                getImage();
             }
         })
     })
@@ -36,7 +55,7 @@ $(document).ready(function() {
     the mousedown listener, the reference to the line element being dragged is in scope (*$(this)*)
 
     */
-    $(".crop-line").mousedown(function() {
+    $("#container").on("mousedown", ".crop-line", function() {
 
         var line = $(this);
 
@@ -99,6 +118,8 @@ function inBounds(line_id, value) {
             break;
     }
 
+    console.log(line_id + " " + value + " " + b1 + " " + b2);
+
     if (value >= b1 && value <= b2) return true;
 
     return false;
@@ -119,9 +140,15 @@ function getCropString() {
     + (imageBounds.get("bottom") - imageBounds.get("top"))
 }
 
-function setBounds() {
+async function setBounds() {
 
-    const rect = document.getElementById('container').getBoundingClientRect();
+    console.log("Set Bounds");
+    var rect = document.getElementById('container').getBoundingClientRect();
+    console.log("before" + " " + rect.height);
+    await sleep(10);
+    var rect = document.getElementById('container').getBoundingClientRect();
+    console.log("atfer" + " " + rect.height);
+
     cropBounds.set("top", rect.top);
     cropBounds.set("bottom", rect.bottom);
     cropBounds.set("left", rect.left);
@@ -133,18 +160,24 @@ function setBounds() {
     imageBounds.set("right", rect.right);
 }
 
+
 function getImage() {
-    console.log("retrieving image . . .");
+    console.log("Get Image");
     $.ajax({
             url: "/image"
             , type: "GET"
             , success : (response) => {
+                console.log("Image Retrieved");
                 displayImage(response);
+                setBounds();
             }
         })
 }
 
 function displayImage(encoded) {
+
+
+    console.log("displayImage");
 
     if (encoded) {
         imageHTML = `
@@ -152,12 +185,14 @@ function displayImage(encoded) {
             <span class="crop-line" id="top"></span>
             <span class="crop-line" id="bottom"></span>
             <span class="crop-line" id="right"></span>
-            <img id="image" src="data:image/jpeg;base64, ${encoded}" alt=""/>
+            <img id="image" src="data:image/jpeg;base64, ${encoded}" alt="whatever"/>
         `;
 
-        console.log(imageHTML);
-
         document.getElementById("container").innerHTML = imageHTML;
-        setBounds();
+
+        // THIS WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        document.getElementById("image").onload = function(){
+            console.log("image loaded . . .");
+        }
     }
 }
