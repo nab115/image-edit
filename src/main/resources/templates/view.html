@@ -2,6 +2,7 @@
 <html lang="en" xmlns:"http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/view.css">
 <script src="/js/jquery-3.6.1.min.js"></script>
+<script src="/js/view.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>Image-Edit</title>
@@ -15,10 +16,12 @@
             <li><input type="button" name="greyscale" class="process-type-btn" value="Greyscale"></li>
             <li><input type="button" name="crop" id="crop" class="process-type-btn" value="Crop"></li>
             <li><input type="button" name="reset" class="process-type-btn" value="Reset"></li>
+            <li><input type="button" id="setBounds" value="Set"></li>
         </ul>
     </div>
     <div id="image-container">
         <div id="container">
+<!--            <img id="image" src="cross_gun.jpeg" alt="whatever"/>-->
         </div>
     </div>
     <form action="/" method="POST" enctype="multipart/form-data">
@@ -26,5 +29,4 @@
         <button>Upload</button>
     </form>
 </body>
-<script src="/js/view.js"></script>
 </html>

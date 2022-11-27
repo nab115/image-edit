@@ -23,7 +23,7 @@ public class MainController {
     @GetMapping("/")
     public String root() {
         image.clearImage();
-        return "upload";
+        return "view";
     }
 
     @GetMapping("/image")
@@ -59,14 +59,12 @@ public class MainController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImage(Model model, @RequestParam("image") MultipartFile img) throws IOException {
+    public String uploadImage(@RequestParam("image") MultipartFile img) throws IOException {
 
         System.out.println("Image Upload : " + img.getOriginalFilename());
 
         image.setImage(img.getBytes());
 
-        model.addAttribute("encoded", image.getBase64Encoded());
-
-        return "upload";
+        return "view";
     }
 }
