@@ -188,11 +188,21 @@ function displayImage(encoded) {
             <img id="image" src="data:image/jpeg;base64, ${encoded}" alt="whatever"/>
         `;
 
+        $("#image").on("load", function(){
+            console.log("image loaded from jquery listener before setting innerHTML. . .");
+        })
+
         document.getElementById("container").innerHTML = imageHTML;
 
         // THIS WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         document.getElementById("image").onload = function(){
-            console.log("image loaded . . .");
+            console.log("image loaded from native listener. . .");
         }
+
+        $("#image").on("load", function(){
+            console.log("image loaded from jquery listener. . .");
+        })
+
+
     }
 }
