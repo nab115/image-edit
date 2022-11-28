@@ -1,12 +1,6 @@
 var cropBounds = new Map();
 const imageBounds = new Map();
 
-function sleep(ms) {
-    return new Promise(
-        resolve => setTimeout(resolve, ms)
-    );
-}
-
 $(document).ready(function() {
 
     getImage();
