@@ -54,6 +54,9 @@ $(document).ready(function() {
     would not be able to use removeEventListener on the anonymous function. So by nesting everything inside
     the mousedown listener, the reference to the line element being dragged is in scope (*$(this)*)
 
+    Reference https://api.jquery.com/on/ - it looks like we can give event namespaces to help with removing
+    // the handler, as well as using the optional data parameter to pass data to the event handler.
+
     */
     $("#container").on("mousedown", ".crop-line", function() {
 
@@ -147,7 +150,7 @@ async function setBounds() {
     console.log("before" + " " + rect.height);
     await sleep(10);
     var rect = document.getElementById('container').getBoundingClientRect();
-    console.log("atfer" + " " + rect.height);
+    console.log("after" + " " + rect.height);
 
     cropBounds.set("top", rect.top);
     cropBounds.set("bottom", rect.bottom);
@@ -183,25 +186,52 @@ function displayImage(encoded) {
         imageHTML = `
             <span class="crop-line" id="left"></span>
             <span class="crop-line" id="top"></span>
-            <span class="crop-line" id="bottom"></span>
+            <span class="crop-line bottom" id="bottom"></span>
             <span class="crop-line" id="right"></span>
-            <img id="image" src="data:image/jpeg;base64, ${encoded}" alt="whatever"/>
+            <img id="image" class="image-class"src="data:image/jpeg;base64, ${encoded}" alt="whatever"/>
         `;
 
+        // this does not work bc the selector has to be static.
+        // cannot bind an event listener to something that does not exist
         $("#image").on("load", function(){
             console.log("image loaded from jquery listener before setting innerHTML. . .");
         })
 
+        // however not sure why this doesn't work. We bind the listener to the static "container" div and it should
+        // attach it to any of its children dynamically
+
+        // image load doesn't bubble so it cant be delegated?
+        // https://stackoverflow.com/questions/5290732/jquery-delegate-not-working-on-load-and-changedata-events
+        $("#container").on("load", "#image", function(){
+            console.log("image loaded from jquery listener before setting innerHTML 2. . . ");
+        })
+
+        // this works - so maybe something is wrong with the load parameter?
+        // it also only works with a class selector image, not id selector?
+        // and it doesnt work if the image has an id set with a similar name?
+
+        // appears to only break if we set the img id to "image" ????
+        $("#container").on("click", ".image-class", function(){
+            console.log("image clicked from jquery listener before setting innerHTML. . . ");
+        })
+
+        $("#container").on("click", ".crop-line", function(){
+            console.log("line clicked from jquery listener before setting innerHTML. . . ");
+        })
+
         document.getElementById("container").innerHTML = imageHTML;
 
-        // THIS WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        document.getElementById("image").onload = function(){
-            console.log("image loaded from native listener. . .");
-        }
+        console.log($("#container .image-class").toArray());
+        console.log($("#container").toArray());
 
-        $("#image").on("load", function(){
-            console.log("image loaded from jquery listener. . .");
-        })
+//         THIS WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//        document.getElementById("image").onload = function(){
+//            console.log("image loaded from native listener. . .");
+//        }
+//
+//        $("#image").on("load", function(){
+//            console.log("image loaded from jquery listener. . .");
+//        })
 
 
     }
