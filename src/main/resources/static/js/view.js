@@ -9,38 +9,9 @@ function sleep(ms) {
 
 $(document).ready(function() {
 
-    $("#image").on("load", function(){
-        console.log("image loaded . . .");
-    })
-
     getImage();
-    console.log("whatever");
 
-    $("#setBounds").click(function (){
-        setBounds();
-    })
-
-    $(document).on("click", "h1", function(){
-        console.log("closer . . .");
-    })
-
-
-    $(".process-type-btn").click(function (){
-        console.log($(this).attr("name"));
-        var data = {"transform": $(this).attr("name")}
-        if (data["transform"] === "crop") {
-            data["cropParams"] = getCropString();
-        }
-
-        $.ajax({
-            url: "/"
-            , type: "POST"
-            , data: data
-            , success : () => {
-                getImage();
-            }
-        })
-    })
+    $(".process-type-btn").click(editImage);
 
     /*
     Nesting dragLine and the mousup listener inside mousdown listener
@@ -121,8 +92,6 @@ function inBounds(line_id, value) {
             break;
     }
 
-    console.log(line_id + " " + value + " " + b1 + " " + b2);
-
     if (value >= b1 && value <= b2) return true;
 
     return false;
@@ -143,14 +112,11 @@ function getCropString() {
     + (imageBounds.get("bottom") - imageBounds.get("top"))
 }
 
-async function setBounds() {
+function setBounds() {
 
     console.log("Set Bounds");
+
     var rect = document.getElementById('container').getBoundingClientRect();
-    console.log("before" + " " + rect.height);
-    await sleep(10);
-    var rect = document.getElementById('container').getBoundingClientRect();
-    console.log("after" + " " + rect.height);
 
     cropBounds.set("top", rect.top);
     cropBounds.set("bottom", rect.bottom);
@@ -163,6 +129,23 @@ async function setBounds() {
     imageBounds.set("right", rect.right);
 }
 
+function editImage() {
+    var button = $(this);
+    console.log(button.attr("name"));
+    var data = {"transform": button.attr("name")}
+    if (data["transform"] === "crop") {
+        data["cropParams"] = getCropString();
+    }
+
+    $.ajax({
+        url: "/"
+        , type: "POST"
+        , data: data
+        , success : () => {
+            getImage();
+        }
+    })
+}
 
 function getImage() {
     console.log("Get Image");
@@ -172,7 +155,7 @@ function getImage() {
             , success : (response) => {
                 console.log("Image Retrieved");
                 displayImage(response);
-                setBounds();
+                $("#upload").on("load", setBounds)
             }
         })
 }
@@ -186,52 +169,12 @@ function displayImage(encoded) {
         imageHTML = `
             <span class="crop-line" id="left"></span>
             <span class="crop-line" id="top"></span>
-            <span class="crop-line bottom" id="bottom"></span>
+            <span class="crop-line" id="bottom"></span>
             <span class="crop-line" id="right"></span>
-            <img id="image" class="image-class"src="data:image/jpeg;base64, ${encoded}" alt="whatever"/>
+            <img id="upload" src="data:image/jpeg;base64, ${encoded}" alt="invalid"/>
         `;
 
-        // this does not work bc the selector has to be static.
-        // cannot bind an event listener to something that does not exist
-        $("#image").on("load", function(){
-            console.log("image loaded from jquery listener before setting innerHTML. . .");
-        })
-
-        // however not sure why this doesn't work. We bind the listener to the static "container" div and it should
-        // attach it to any of its children dynamically
-
-        // image load doesn't bubble so it cant be delegated?
-        // https://stackoverflow.com/questions/5290732/jquery-delegate-not-working-on-load-and-changedata-events
-        $("#container").on("load", "#image", function(){
-            console.log("image loaded from jquery listener before setting innerHTML 2. . . ");
-        })
-
-        // this works - so maybe something is wrong with the load parameter?
-        // it also only works with a class selector image, not id selector?
-        // and it doesnt work if the image has an id set with a similar name?
-
-        // appears to only break if we set the img id to "image" ????
-        $("#container").on("click", ".image-class", function(){
-            console.log("image clicked from jquery listener before setting innerHTML. . . ");
-        })
-
-        $("#container").on("click", ".crop-line", function(){
-            console.log("line clicked from jquery listener before setting innerHTML. . . ");
-        })
-
         document.getElementById("container").innerHTML = imageHTML;
-
-        console.log($("#container .image-class").toArray());
-        console.log($("#container").toArray());
-
-//         THIS WORKS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//        document.getElementById("image").onload = function(){
-//            console.log("image loaded from native listener. . .");
-//        }
-//
-//        $("#image").on("load", function(){
-//            console.log("image loaded from jquery listener. . .");
-//        })
 
 
     }
